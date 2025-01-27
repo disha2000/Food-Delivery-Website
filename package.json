@@ -1,0 +1,29 @@
+{
+  "name": "food-order-application-react",
+  "version": "1.0.0",
+  "description": "Fresh, fast, and personalized – get your favorite meals delivered anytime, anywhere with just a tap!",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/disha2000/Food-Delivery-Website.git"
+  },
+  "author": "Disha Doshi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/disha2000/Food-Delivery-Website/issues"
+  },
+  "homepage": "https://github.com/disha2000/Food-Delivery-Website#readme",
+  "dependencies": {
+    "parcel": "^2.13.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "process": "^0.11.10"
+  }
+}
