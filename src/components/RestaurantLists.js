@@ -1,11 +1,12 @@
 import RestaurantItem from "./RestaurantItem";
-import { RESTUARANT_LISTS } from "../utils/mockData";
 
-const RestaurantLists = () => {
+const RestaurantLists = (props) => {
+  console.log('props', props)
+  const { restaurantLists } = props;
   return (
     <div className="restaurants___container">
-      {RESTUARANT_LISTS.map((restaurant) => {
-        const { id } = restaurant.info;
+      {restaurantLists.map((restaurant) => {
+        const { id } = restaurant?.info;
         return <RestaurantItem key={id} restaurant={restaurant} />;
       })}
     </div>

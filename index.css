@@ -69,3 +69,7 @@ h2 {
 .restaurant_card:hover {
     border: 1px solid black;
 }
+
+.filter__section{
+    margin: 20px;
+}
