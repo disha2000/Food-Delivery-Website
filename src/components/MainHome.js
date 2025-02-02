@@ -1,23 +1,65 @@
 import RestaurantLists from "./RestaurantLists";
 import { RESTUARANT_URL } from "../utils/constants";
 import { useEffect, useState } from "react";
+import Shimmer from "./Shimmer";
+import useFetch from "../CustomHook/useFetch";
 
 const MainHome = () => {
   const [restaurantLists, setRestaurantLists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchText, setSearchtext] = useState("");
+  // let nonState = "sdsd"
+  const [isLoading, error, data] = useFetch(RESTUARANT_URL);
+  const [filterdRestaurants, setFilteredRestaurants] = useState([]);
+
+  // useEffect(() => {
+  //   fetchRestuarantsData();
+  // }, []);
 
   useEffect(() => {
-    fetchRestuarantsData();
-  }, []);
-  fetchRestuarantsData = async () => {
-    const response = await fetch(RESTUARANT_URL);
-    const results = await response.json();
-    const _restaurantsLists =
-      results.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-    setRestaurantLists(_restaurantsLists);
-  };
+    if (!isLoading) {
+      setLoading(isLoading);
+      const _restaurantsLists =
+        data.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants || [];
+      console.log(_restaurantsLists);
+      setRestaurantLists(_restaurantsLists);
+      setFilteredRestaurants(_restaurantsLists);
+    }
+  }, [isLoading]);
+
+  // fetchRestuarantsData = async () => {
+  //   const response = await fetch(RESTUARANT_URL);
+  //   const results = await response.json();
+  //   const _restaurantsLists =
+  //     results.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+  //       ?.restaurants || [];
+  //   const _loading = false;
+  //   setLoading(_loading);
+  //   setRestaurantLists(_restaurantsLists);
+  // };
   return (
     <div className="main__container">
       <div className="filter__section">
+        <div className="search_section">
+          <input
+            placeholder="Search Restaurants"
+            value={searchText}
+            onChange={(e) => setSearchtext(e.target.value)}
+          />
+          <button
+            onClick={() => {
+              const filterdRestaurants = restaurantLists.filter((restaurant) =>
+                restaurant?.info?.name
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase().trim())
+              );
+              setFilteredRestaurants(filterdRestaurants);
+            }}
+          >
+            Search
+          </button>
+        </div>
         <button
           className="toprated_filter"
           onClick={() => {
@@ -33,7 +75,11 @@ const MainHome = () => {
           Top Rated Restaurants
         </button>
       </div>
-      <RestaurantLists restaurantLists={restaurantLists} />
+      {loading ? (
+        <Shimmer />
+      ) : (
+        <RestaurantLists restaurantLists={filterdRestaurants} />
+      )}
     </div>
   );
 };
