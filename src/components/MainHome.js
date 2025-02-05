@@ -17,16 +17,19 @@ const MainHome = () => {
   // }, []);
 
   useEffect(() => {
+    console.log('effect1')
     if (!isLoading) {
       setLoading(isLoading);
       const _restaurantsLists =
         data.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
-          ?.restaurants || [];
+          ?.restaurants || []; 
       console.log(_restaurantsLists);
       setRestaurantLists(_restaurantsLists);
       setFilteredRestaurants(_restaurantsLists);
     }
   }, [isLoading]);
+
+
 
   // fetchRestuarantsData = async () => {
   //   const response = await fetch(RESTUARANT_URL);
@@ -38,6 +41,7 @@ const MainHome = () => {
   //   setLoading(_loading);
   //   setRestaurantLists(_restaurantsLists);
   // };
+  console.log('main home render')
   return (
     <div className="main__container">
       <div className="filter__section">
