@@ -1,36 +1,28 @@
-import React from "react";
+import React, {lazy, Suspense} from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import MainHome from "./components/MainHome";
-import About from "./components/About";
 import Error from "./components/Error";
 import ContactUs from "./components/ContactUs";
 import Footer from './components/Footer'
 import RestaurantMenu from "./components/RestaurantMenu";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
+
+const Grocery = lazy(() => import("./components/Grocery"))
+const About = lazy(() => import("./components/About"))
+// const About = lazy(() => import('./components/About'));
+
+
 const App = () => {
   return (
-    <div className="app-container">
+    <div className="app-container min-h-[100vh] flex justify-between flex-col">
       <Header />
       <Outlet />
       <Footer/>
     </div>
   );
 };
-
-
-/* Decalring the all the routes 
-1. / -> Home
-2. /about -> About
-3. /contactus -> Contact
-
-- Doing all the configuration using createBrowserRouter it takes list of all routing path with corresponding element
-- Adding childern to main / path 
-  - As our header and footer will going to same and in that we are replacing <Outlet/> with the <MainHone/>, <About/> and <ContactUs> based on the path
-
-*/
-
 
 const appRouterConfiguration = createBrowserRouter([
   {
@@ -49,6 +41,10 @@ const appRouterConfiguration = createBrowserRouter([
       {
         path: "/contactus",
         element: <ContactUs />,
+      },
+      {
+        path: "/grocery",
+        element: <Suspense><Grocery/></Suspense>
       },
       {
         path:"/restaurant/:resId",

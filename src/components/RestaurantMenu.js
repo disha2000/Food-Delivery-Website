@@ -1,52 +1,23 @@
-import { useEffect, useMemo, useState, useMemo } from "react";
+import { useMemo, useState, useMemo } from "react";
 import Shimmer from "./Shimmer";
-import nonveg from "../../public/image copy.png";
-import veg from "../../public/image.png";
 import { useParams } from "react-router-dom";
-import { MENU_URL, MENU_IMAGE_URL } from "../utils/constants";
-
-const getMenuItemsDeep = (cards) => {
-  let allMenuItems = [];
-  cards.map((card) => {
-    if (card?.card?.card?.itemCards) {
-      allMenuItems = [...card.card.card.itemCards, ...allMenuItems];
-    }
-  });
-  return allMenuItems;
-};
+import useRestaurantMenu from "../CustomHook/useRestaurantMenu";
+import MenuCategory from "./MenuCategory";
 
 const RestaurantMenu = () => {
-  const [restaurantBasicInfo, setRestaurantBasicInfo] = useState({});
-  const [restaurantMenu, setRestaurantMenu] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isVegCheck, setIsVegCheck] = useState(false);
   const [isNonVegCheck, setIsNonVegCheck] = useState(false);
   const { resId } = useParams();
 
-  useEffect(() => {
-    fetchRestaurantInfo();
-  }, []);
-  const fetchRestaurantInfo = async () => {
-    const response = await fetch(MENU_URL + resId);
-    const restaurantInfo = await response.json();
-    setIsLoading(false);
-    const { id, name, isOpen, cuisines, avgRating, costForTwoMessage, sla } =
-      restaurantInfo?.data?.cards[2]?.card?.card?.info;
-    setRestaurantBasicInfo({
-      name,
-      isOpen,
-      cuisines,
-      avgRating,
-      costForTwoMessage,
-      sla,
-    });
+  const {
+    restaurantBasicInfo,
+    restaurantMenuData: restaurantMenu,
+    error,
+    loading: isLoading,
+    menuCategories
+  } = useRestaurantMenu(resId);
 
-    const _restaurantMenu = getMenuItemsDeep(
-      restaurantInfo?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards
-    );
-    setRestaurantMenu(_restaurantMenu);
-  };
-  filteredResMenu =
+  const filteredResMenu =
     useMemo(() => {
       if (isVegCheck) {
         return restaurantMenu.filter((menuItem) => menuItem?.card?.info?.isVeg);
@@ -62,29 +33,30 @@ const RestaurantMenu = () => {
   return isLoading ? (
     <Shimmer />
   ) : (
-    <div className="restaurant_menu__container">
-      <div className="inner__container">
-        <h1>{restaurantBasicInfo.name}</h1>
-        <div className="basic__info">
-          <h4>
-            {restaurantBasicInfo.avgRating}{" "}
-            {restaurantBasicInfo.costForTwoMessage}
+    <div className="restaurant_menu__container mt-[80] p-4 flex justify-center">
+      <div className="inner__container w-[50%]">
+        <h1 className="font-bold text-2xl">{restaurantBasicInfo.name}</h1>
+
+        <div className="basic__info border-1 border-solid border-gray-300 px-2.5 py-6 rounded-2xl shadow-xl shadow-gray-300 my-5">
+          <h4 className="mb-1 font-semibold text-sm">
+            ⭐️ {restaurantBasicInfo.avgRating}
           </h4>
-          <p>{restaurantBasicInfo?.cuisines?.join(",")}</p>
-          <h3>{restaurantBasicInfo?.sla?.slaString}</h3>
+          <h4 className="mb-1 font-semibold text-sm">{restaurantBasicInfo.costForTwoMessage}</h4>
+          <p className="text-orange-700 text-md font-medium underline italic mb-2  text-sm">{restaurantBasicInfo?.cuisines?.join(",")}</p>
+          <h3 className="font-semibold text-sm">{restaurantBasicInfo?.sla?.slaString}</h3>
         </div>
         <div className="menu__filter">
           <input
             type="checkbox"
             checked={isVegCheck}
             onChange={(e) => {
-              console.log("here");
               setIsNonVegCheck(false);
               setIsVegCheck(e.target.checked);
             }}
           />
-          <label>Veg</label>
+          <label className="font-bold ml-2 mr-15 ">Veg</label>
           <input
+            className="mr-3"
             type="checkbox"
             checked={isNonVegCheck}
             onChange={(e) => {
@@ -92,43 +64,20 @@ const RestaurantMenu = () => {
               setIsVegCheck(false);
             }}
           />
-          <label>NonVeg</label>
+          <label className="font-bold">NonVeg</label>
         </div>
         <div className="menu__lists">
-          <h2>-- MENU --</h2>
-          {filteredResMenu?.map((menuItem) => {
-            const {
-              id,
-              name,
-              description,
-              imageId,
-              price,
-              isVeg,
-              defaultPrice,
-            } = menuItem?.card?.info;
-            return (
-              <div className="menu__item" key={id}>
-                <div className="item__info">
-                  <img className="food__type" src={isVeg ? veg : nonveg} />
-                  <h3 className="name">{name}</h3>
-                  <h4 className="price">
-                    &#8377;{price / 100 || defaultPrice / 100}
-                  </h4>
-                  <p className="description">{description}</p>
-                </div>
-
-                <img
-                  src={`${MENU_IMAGE_URL}${imageId}`}
-                  alt="menu image"
-                  className="item__image"
-                />
-              </div>
-            );
-          })}
+          <h2 className="font-medium text-center text-gray-400">-- MENU --</h2>
+          {
+            menuCategories.map((category) => {
+              const {categoryId} = category?.card?.card;
+              console.log(categoryId)
+              return <MenuCategory category={category} key={categoryId} isVegCheck={isVegCheck} isNonVegCheck={isNonVegCheck}/>
+            })
+          }
         </div>
       </div>
     </div>
   );
 };
-
 export default RestaurantMenu;

@@ -1,31 +1,26 @@
 import logo from "../../public/logo.png";
-import {useMemo, useState } from "react";
+import {useState } from "react";
 import { Link } from "react-router-dom";
-
+import useNetworkStatus from "../CustomHook/useNetworkStatus";
 const Header = () => {
   const [btnName, setBtnName] = useState("login");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const isOnline = useNetworkStatus()
 
-  console.log("before use memo");
-  const fullName = useMemo(() => {
-    console.log("use memo");
-    return firstName + lastName;
-  }, [lastName, firstName]);
-
-  console.log("after use memo");
   return (
-    <div className="header__container">
-      <div className="logo">
-        <img src={logo} alt="SnapEats logo" />
+    <div className="header__container flex justify-between h-20 bg-white items-center py-1.5 px-[10%] shadow-xl fixed w-[100%] z-50 top-0">
+      <div className="logo w-40 h-15">
+        <Link to="/"><img src={logo} alt="SnapEats logo" /></Link>
       </div>
       <div className="header_items">
-        <ul>
-          <li><Link to='/'>Home</Link></li>
-          <li><Link to='/about'>About Us</Link></li>
-          <li><Link to='/contactus'>Contact Us</Link></li>
-          <li>Cart</li>
-          <li>
+        <ul className="flex justify-around items-center">
+          <li className="px-2 text-sm font-bold hover:text-gray-600">{isOnline? '✅ Online' : '🔴 Offline'}</li>
+          <li className="px-2 text-sm font-bold hover:text-gray-600"><Link to='/'>Home</Link></li>
+          <li className="px-2 text-sm font-bold hover:text-gray-600"><Link to='/about'>About Us</Link></li>
+          <li className="px-2 text-sm font-bold hover:text-gray-600"><Link to='/contactus'>Contact Us</Link></li>
+          <li className="px-2 text-sm font-bold hover:text-gray-600"><Link to='/grocery'>Grocery</Link></li>
+
+          <li className="px-2 text-sm font-bold">Cart</li>
+          <li className="px-2 text-sm font-bold">
             <button
               className="btn"
               onClick={() => {
@@ -39,15 +34,6 @@ const Header = () => {
           </li>
         </ul>
       </div>
-      <input
-        value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
-      ></input>
-      <input
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
-      ></input>
-      <div>{fullName}</div>
     </div>
   );
 };

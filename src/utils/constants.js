@@ -7,3 +7,11 @@ export const MENU_URL = "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_M
 
 
 export const MENU_IMAGE_URL = "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/"
+
+
+// things to do
+
+
+// life cycle  - componentDidupdate, componentWillUnmount
+// api call 
+// dependency in class based
