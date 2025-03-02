@@ -25,10 +25,10 @@ const MainHome = () => {
 
   const isOnline = test();
   if(!isOnline) {
-    return <div className="main__container">Looks like you are offline, please check your internet connection!!!</div>
+    return <div className="main__container mt-[80] py-4 px-[10%]">Looks like you are offline, please check your internet connection!!!</div>
   }
   return (
-    <div className="main__container mt-[80] py-4 px-[10%]">
+    <div className="main__container mt-[80] py-4 px-[10%] dark:bg-gray-900">
       <div className="filter__section flex justify-around">
         <div className="search_section flex">
           <input

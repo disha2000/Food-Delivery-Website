@@ -4,7 +4,7 @@ const RestaurantLists = (props) => {
   const { restaurantLists } = props;
   const PromotedRestaurantItem = restaurantItemPromoted(RestaurantItem);
   return (
-    <div className="restaurants___container flex flex-wrap justify-center mt-7">
+    <div className="restaurants___container flex flex-wrap justify-center mt-7 dark:text-white">
       {restaurantLists?.map((restaurant) => {
         const { id, isOpen } = restaurant?.info;
         console.log(restaurant?.info)

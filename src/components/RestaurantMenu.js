@@ -33,11 +33,11 @@ const RestaurantMenu = () => {
   return isLoading ? (
     <Shimmer />
   ) : (
-    <div className="restaurant_menu__container mt-[80] p-4 flex justify-center">
+    <div className="restaurant_menu__container mt-[80] p-4 flex justify-center dark:text-white dark:bg-gray-900">
       <div className="inner__container w-[50%]">
         <h1 className="font-bold text-2xl">{restaurantBasicInfo.name}</h1>
 
-        <div className="basic__info border-1 border-solid border-gray-300 px-2.5 py-6 rounded-2xl shadow-xl shadow-gray-300 my-5">
+        <div className="basic__info border-1 border-solid border-gray-300 px-2.5 py-6 rounded-2xl shadow-xl shadow-gray-300 my-5 dark:shadow-lg">
           <h4 className="mb-1 font-semibold text-sm">
             ⭐️ {restaurantBasicInfo.avgRating}
           </h4>
@@ -71,7 +71,6 @@ const RestaurantMenu = () => {
           {
             menuCategories.map((category) => {
               const {categoryId} = category?.card?.card;
-              console.log(categoryId)
               return <MenuCategory category={category} key={categoryId} isVegCheck={isVegCheck} isNonVegCheck={isNonVegCheck}/>
             })
           }

@@ -32,7 +32,7 @@ const RestaurantItem = (props) => {
 export const restaurantItemPromoted = (Component) => {
   return (props) => {
     return (<div className="relative">
-        <label className="absolute bg-black text-amber-50  rounded-lg font-medium text-xs px-2.5 py-1 z-10 bottom-0 right-0 mr-3">Open</label>
+        <label className="absolute bg-black text-amber-50  rounded-lg font-medium text-xs px-2.5 py-1 z-10 bottom-0 right-0 mr-3 dark:bg-white dark:text-black">Open</label>
         <Component {...props}/>
     </div>)
   
