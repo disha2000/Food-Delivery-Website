@@ -8,6 +8,9 @@ import Footer from "./components/Footer";
 import RestaurantMenu from "./components/RestaurantMenu";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { ThemeContext } from "./Context/ThemeContext";
+import { Provider } from "react-redux";
+import { store } from "./store/appStore";
+import Cart from "./components/Cart";
 
 const Grocery = lazy(() => import("./components/Grocery"));
 const About = lazy(() => import("./components/About"));
@@ -19,17 +22,19 @@ const App = () => {
   const [theme, setTheme] = useState(themeContext.theme);
   console.log(theme);
   return (
-    <ThemeContext.Provider value={{ theme: theme, setTheme }}>
+    <Provider store={store}>
+      <ThemeContext.Provider value={{ theme: theme, setTheme }}>
       <div
         className={`app-container min-h-[100vh] flex justify-between flex-col ${
           theme === "dark" ? "dark" : ""
-        }`}
+        } dark:bg-gray-900`}
       >
         <Header />
         <Outlet />
         <Footer />
       </div>
     </ThemeContext.Provider>
+    </Provider>    
   );
 };
 
@@ -63,6 +68,10 @@ const appRouterConfiguration = createBrowserRouter([
         path: "/restaurant/:resId",
         element: <RestaurantMenu />,
       },
+      {
+        path: "/cart",
+        element:<Cart/>
+      }
     ],
   },
 ]);

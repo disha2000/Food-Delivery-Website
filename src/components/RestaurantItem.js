@@ -21,21 +21,27 @@ const RestaurantItem = (props) => {
       <div className="res-details mt-2">
         <h3 className="font-black py-1 text-lg">{name}</h3>
         <h3 className="font-semibold">{cuisines.join(", ")}</h3>
-        <h4 className="py-2"> <span className="pink text-md text-white p-0.3 ">⭐️</span>{avgRating}<span className="pl-1">{costForTwo}</span></h4>
-        
+        <h4 className="py-2">
+          <span className="pink text-md text-white p-0.3 ">⭐️</span>
+          {avgRating}
+          <span className="pl-1">{costForTwo}</span>
+        </h4>
       </div>
+      {/* <button className="bg-white dark:bg-black p-2 absolute"></button> */}
     </div>
   );
 };
 
-
 export const restaurantItemPromoted = (Component) => {
   return (props) => {
-    return (<div className="relative">
-        <label className="absolute bg-black text-amber-50  rounded-lg font-medium text-xs px-2.5 py-1 z-10 bottom-0 right-0 mr-3 dark:bg-white dark:text-black">Open</label>
-        <Component {...props}/>
-    </div>)
-  
-  }
-}
+    return (
+      <div className="relative">
+        <label className="absolute bg-black text-amber-50  rounded-lg font-medium text-xs px-2.5 py-1 z-10 bottom-0 right-0 mr-3 dark:bg-white dark:text-black">
+          Open
+        </label>
+        <Component {...props} />
+      </div>
+    );
+  };
+};
 export default RestaurantItem;
